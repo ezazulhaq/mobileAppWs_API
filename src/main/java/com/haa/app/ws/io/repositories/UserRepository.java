@@ -9,5 +9,6 @@ import com.haa.app.ws.io.entity.UserEntity;
 public interface UserRepository extends CrudRepository<UserEntity, Long> {
 	
 	UserEntity findUserByEmail(String email);
+	UserEntity findByUserId(String userId);
 
 }
