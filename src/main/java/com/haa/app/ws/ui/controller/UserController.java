@@ -3,6 +3,7 @@ package com.haa.app.ws.ui.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -63,8 +64,10 @@ public class UserController {
 		if(userDetails.getFirstName().isEmpty() || userDetails.getLastName().isEmpty())
 			throw new UserServiceException(ErrorMessages.MISSING_REQUIRED_FIELD.getErrorMessage());
 		
-		UserDto userDto = new UserDto();
-		BeanUtils.copyProperties(userDetails, userDto);
+		//UserDto userDto = new UserDto();
+		//BeanUtils.copyProperties(userDetails, userDto);
+		ModelMapper modelMapper = new ModelMapper();
+		UserDto userDto = modelMapper.map(userDetails, UserDto.class);
 		
 		UserDto createUser = userService.createUser(userDto);
 		BeanUtils.copyProperties(createUser, returnValue);
