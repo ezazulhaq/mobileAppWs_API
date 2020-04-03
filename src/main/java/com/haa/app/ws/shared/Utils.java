@@ -22,6 +22,11 @@ public class Utils {
 		return generateRandomString(length);
 	}
 	
+	public String generateAddressId(int length)
+	{
+		return generateRandomString(length);
+	}
+	
 	/*
 	 * Generate a random String of characters of specified length
 	 */
