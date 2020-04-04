@@ -3,6 +3,7 @@ package com.haa.app.ws.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -18,6 +19,7 @@ import com.haa.app.ws.io.entity.UserEntity;
 import com.haa.app.ws.io.repositories.UserRepository;
 import com.haa.app.ws.service.UserService;
 import com.haa.app.ws.shared.Utils;
+import com.haa.app.ws.shared.dto.AddressDto;
 import com.haa.app.ws.shared.dto.UserDto;
 import com.haa.app.ws.ui.model.response.ErrorMessages;
 
@@ -39,9 +41,17 @@ public class UserServiceImpl implements UserService {
 		if(userRepository.findUserByEmail(user.getEmail()) != null) 
 			throw new RuntimeException("Record Already Exist");
 		
+		for (int i = 0; i < user.getAddresses().size(); i++) {
+			AddressDto addressDto = user.getAddresses().get(i);
+			addressDto.setUserDetails(user);
+			addressDto.setAddressId(utils.generateAddressId(utils.getAddressIdLength()));
+			user.getAddresses().set(i, addressDto);
+		}
 		
+		ModelMapper modelmapper = new ModelMapper();
 		UserEntity userEntity = new UserEntity();
-		BeanUtils.copyProperties(user, userEntity);
+		//BeanUtils.copyProperties(user, userEntity);
+		userEntity = modelmapper.map(user, UserEntity.class);
 		
 		String publicUserId = utils.generateUserId(utils.getUserIdLength());
 		userEntity.setUserId(publicUserId);
@@ -50,7 +60,8 @@ public class UserServiceImpl implements UserService {
 		UserEntity storeUserDetails = userRepository.save(userEntity);
 		
 		UserDto returnValue = new UserDto();
-		BeanUtils.copyProperties(storeUserDetails, returnValue);
+		//BeanUtils.copyProperties(storeUserDetails, returnValue);
+		returnValue = modelmapper.map(storeUserDetails, UserDto.class);
 		
 		return returnValue;
 	}

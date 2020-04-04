@@ -70,7 +70,8 @@ public class UserController {
 		UserDto userDto = modelMapper.map(userDetails, UserDto.class);
 		
 		UserDto createUser = userService.createUser(userDto);
-		BeanUtils.copyProperties(createUser, returnValue);
+		//BeanUtils.copyProperties(createUser, returnValue);
+		returnValue = modelMapper.map(createUser, UserRest.class);
 		
 		return returnValue;
 	}
