@@ -7,5 +7,6 @@ import com.haa.app.ws.shared.dto.AddressDto;
 public interface AddressService {
 	
 	List<AddressDto> getAddresses(String id);
+	AddressDto getAddressId(String addressId);
 
 }

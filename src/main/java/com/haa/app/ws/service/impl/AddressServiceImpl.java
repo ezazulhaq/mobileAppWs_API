@@ -42,4 +42,19 @@ public class AddressServiceImpl implements AddressService {
 		return returnValues;
 	}
 
+	@Override
+	public AddressDto getAddressId(String addressId) {
+		
+		AddressDto returnValue = new AddressDto();
+		ModelMapper modelMapper = new ModelMapper();
+		
+		AddressEntity addressEntity = addressRepository.findByAddressId(addressId);
+		
+		if (addressEntity != null) {
+			returnValue = modelMapper.map(addressEntity, AddressDto.class);
+		}
+
+		return returnValue;
+	}
+
 }

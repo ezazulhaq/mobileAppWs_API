@@ -39,6 +39,9 @@ public class UserController {
 	UserService userService;
 	
 	@Autowired
+	AddressService addressService;
+	
+	@Autowired
 	AddressService addressesService;
 	
 	@GetMapping(path = "/{id}", 
@@ -152,6 +155,20 @@ public class UserController {
 			Type listType = new TypeToken<List<AddressRest>>() {}.getType();
 			returnValue = new ModelMapper().map(addressesDto, listType);
 		}
+
+		return returnValue;
+	}
+	
+	// url - http://localhost:8080/mobile-app-ws/{id}/addresses/{addId}
+	@GetMapping(path = "/{id}/addresses/{addressId}", 
+			produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE} )
+	public AddressRest getUserAddressId(@PathVariable String addressId)
+	{
+		AddressRest returnValue = new AddressRest();
+		ModelMapper modelMapper = new ModelMapper();
+		
+		AddressDto addressesDto = addressService.getAddressId(addressId);
+		returnValue = modelMapper.map(addressesDto, AddressRest.class);
 
 		return returnValue;
 	}
