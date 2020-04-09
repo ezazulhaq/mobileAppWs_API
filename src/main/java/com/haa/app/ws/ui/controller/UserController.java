@@ -141,7 +141,7 @@ public class UserController {
 		return returnvalue;
 	}
 	
-	// url - http://localhost:8080/mobile-app-ws/{id}/addresses
+	// url - http://localhost:8080/mobile-app-ws/users/{id}/addresses
 	@GetMapping(path = "/{id}/addresses", 
 			produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE} )
 	public List<AddressRest> getUserAddress(@PathVariable String id)
@@ -159,7 +159,7 @@ public class UserController {
 		return returnValue;
 	}
 	
-	// url - http://localhost:8080/mobile-app-ws/{id}/addresses/{addId}
+	// url - http://localhost:8080/mobile-app-ws/users/{id}/addresses/{addId}
 	@GetMapping(path = "/{id}/addresses/{addressId}", 
 			produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE} )
 	public AddressRest getUserAddressId(@PathVariable String addressId)
@@ -170,6 +170,26 @@ public class UserController {
 		AddressDto addressesDto = addressService.getAddressId(addressId);
 		returnValue = modelMapper.map(addressesDto, AddressRest.class);
 
+		return returnValue;
+	}
+	
+	// url - http://localhost:8080/mobile-app-ws/users/email-verification?token=adsfasf
+	@GetMapping(path = "/email-verification", 
+			produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE} )
+	public OperationStatusModel verifyEmailToken(@RequestParam(value = "token") String token)
+	{
+		OperationStatusModel returnValue = new OperationStatusModel();
+		returnValue.setOperationName(RequestOperationName.VERIFY_EMAIL.name());
+		
+		boolean isverfied = userService.verifyEmailToken(token);
+		
+		if(isverfied) {
+			returnValue.setOperationResult(RequestOperationStatus.SUCCESS.name());
+		}
+		else {
+			returnValue.setOperationResult(RequestOperationStatus.ERROR.name());
+		}
+		
 		return returnValue;
 	}
 	
