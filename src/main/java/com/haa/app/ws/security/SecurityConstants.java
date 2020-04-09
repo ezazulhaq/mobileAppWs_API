@@ -8,6 +8,7 @@ public class SecurityConstants {
 	public static final String TOKEN_PREFIX = "Bearer ";
 	public static final String HEADER_STRING = "Authorization";
 	public static final String SIGNUP_URL = "/users";
+	public static final String VERIFICATION_EMAIL_URL = "/users/email-verification";
 	//public static final String TOKEN_SECRET = "asfaskjfgbs76";		// Token secret read from application.properties file
 	
 	public static String getTokenSecret() {
